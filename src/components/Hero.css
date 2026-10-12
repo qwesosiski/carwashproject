@@ -1,0 +1,173 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 0 80px;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.15), transparent 50%),
+              radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.15), transparent 50%);
+  z-index: -1;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 8px 18px;
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  border-radius: 50px;
+  color: #38bdf8;
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  font-weight: 800;
+}
+
+.hero-title span {
+  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-text {
+  font-size: 1.15rem;
+  color: #94a3b8;
+  margin-bottom: 36px;
+  max-width: 520px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.hero-stats > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-stats strong {
+  font-size: 2rem;
+  color: #0ea5e9;
+  font-weight: 800;
+}
+
+.hero-stats span {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.car-card {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  aspect-ratio: 1;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 30px 80px rgba(14, 165, 233, 0.15);
+  animation: float 4s ease-in-out infinite;
+}
+
+.car-emoji {
+  font-size: 10rem;
+  filter: drop-shadow(0 20px 30px rgba(14, 165, 233, 0.4));
+}
+
+.bubbles {
+  position: absolute;
+  inset: 0;
+}
+
+.bubbles span {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0.6;
+  animation: rise 5s linear infinite;
+}
+
+.bubbles span:nth-child(1) { left: 20%; bottom: 10%; animation-delay: 0s; }
+.bubbles span:nth-child(2) { left: 50%; bottom: 5%; animation-delay: 1.5s; }
+.bubbles span:nth-child(3) { left: 75%; bottom: 15%; animation-delay: 3s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes rise {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(-400px) scale(1.2); opacity: 0; }
+}
+
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2.3rem;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-stats {
+    justify-content: center;
+  }
+
+  .hero-text {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-visual {
+    order: -1;
+  }
+
+  .car-card {
+    max-width: 300px;
+  }
+
+  .car-emoji {
+    font-size: 6rem;
+  }
+}
