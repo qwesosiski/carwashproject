@@ -1,0 +1,68 @@
+.map-section {
+  padding: 100px 0;
+}
+
+.map-wrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.map-error,
+.map-loading {
+  padding: 60px 20px;
+  text-align: center;
+  background: #1e293b;
+  border-radius: 20px;
+  color: #94a3b8;
+  border: 1px solid rgba(14, 165, 233, 0.15);
+}
+
+.map-info-card {
+  background: #1e293b;
+  border: 1px solid rgba(14, 165, 233, 0.15);
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.map-info-card h3 {
+  margin-bottom: 20px;
+  color: #38bdf8;
+  font-size: 1.2rem;
+}
+
+.map-info-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.map-info-row > span {
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.map-info-row strong {
+  display: block;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.map-info-row p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.map-route-btn {
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .map-wrapper {
+    grid-template-columns: 1fr;
+  }
+}

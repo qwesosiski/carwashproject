@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { services } from '../data/services';
+import { useAuth } from '../context/AuthContext';
 import './BookingModal.css';
 
 const BookingModal = ({ onClose }) => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
+    name: user?.name || '',
+    phone: user?.phone || '',
     car: '',
     service: services[1].title,
     date: '',
@@ -23,12 +25,26 @@ const BookingModal = ({ onClose }) => {
       alert('Пожалуйста, заполните имя и телефон');
       return;
     }
+
+    // Сохраняем запись, если пользователь авторизован
+    if (user) {
+      const bookings = JSON.parse(localStorage.getItem('aquashine_bookings') || '[]');
+      bookings.push({
+        id: Date.now(),
+        userId: user.id,
+        ...formData,
+        createdAt: new Date().toISOString(),
+      });
+      localStorage.setItem('aquashine_bookings', JSON.stringify(bookings));
+    }
+
     setSubmitted(true);
     setTimeout(() => {
       onClose();
     }, 2500);
   };
 
+  // ... остальной JSX без изменений (см. предыдущий ответ)
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -38,7 +54,10 @@ const BookingModal = ({ onClose }) => {
           <div className="modal-success">
             <div className="success-icon">✅</div>
             <h2>Заявка принята!</h2>
-            <p>Мы свяжемся с вами в течение 15 минут для подтверждения.</p>
+            <p>
+              Мы свяжемся с вами в течение 15 минут для подтверждения.
+              {user && ' Запись сохранена в личном кабинете.'}
+            </p>
           </div>
         ) : (
           <>
