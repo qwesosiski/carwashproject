@@ -45,8 +45,10 @@ const Header = ({ onBook }) => {
           {user ? (
             <div className="user-menu">
               <Link to="/account" className="user-link">
-                <span className="user-avatar">{user.name.charAt(0).toUpperCase()}</span>
-                <span className="user-name">{user.name}</span>
+                <span className="user-avatar">
+                  {(user.username || user.email || '?').charAt(0).toUpperCase()}
+                </span>
+                <span className="user-name">{user.username || user.email}</span>
               </Link>
               <button className="logout-icon-btn" onClick={handleLogout} title="Выйти">
                 ⏻

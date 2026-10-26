@@ -26,7 +26,6 @@ const HomePage = ({ onBook }) => (
 
 function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-
   const openBooking = () => setIsBookingOpen(true);
   const closeBooking = () => setIsBookingOpen(false);
 

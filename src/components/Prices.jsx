@@ -1,8 +1,14 @@
-import React from 'react';
-import { prices } from '../data/services';
+import React, { useEffect, useState } from 'react';
+import { api } from '../api/client';
 import './Prices.css';
 
 const Prices = ({ onBook }) => {
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    api.getServices().then(setServices).catch(console.error);
+  }, []);
+
   return (
     <section id="prices" className="prices">
       <div className="container">
@@ -14,13 +20,18 @@ const Prices = ({ onBook }) => {
             <span>Время</span>
             <span>Цена</span>
           </div>
-          {prices.map((item, idx) => (
-            <div className="prices-row" key={idx}>
-              <span>{item.name}</span>
-              <span className="time">{item.time}</span>
-              <span className="price">{item.price}</span>
+          {services.map((item) => (
+            <div className="prices-row" key={item.id}>
+              <span>{item.title}</span>
+              <span className="time">{item.duration} мин</span>
+              <span className="price">{item.price} ₽</span>
             </div>
           ))}
+          {services.length === 0 && (
+            <div className="prices-row">
+              <span colSpan="3">Загрузка…</span>
+            </div>
+          )}
         </div>
         <div className="prices-cta">
           <button className="btn btn-primary" onClick={onBook}>

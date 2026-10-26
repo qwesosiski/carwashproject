@@ -6,7 +6,7 @@ import './Login.css';
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     phone: '',
     email: '',
     password: '',
@@ -29,15 +29,20 @@ const Login = () => {
 
     try {
       if (isRegister) {
-        if (!formData.name || !formData.email || !formData.password) {
+        if (!formData.username || !formData.email || !formData.password) {
           throw new Error('Заполните обязательные поля');
         }
-        await register(formData);
+        await register({
+          username: formData.username,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        });
       } else {
-        if (!formData.email || !formData.password) {
-          throw new Error('Введите email и пароль');
+        if (!formData.username || !formData.password) {
+          throw new Error('Введите логин и пароль');
         }
-        await login(formData.email, formData.password);
+        await login(formData.username, formData.password);
       }
       navigate('/account');
     } catch (err) {
@@ -51,7 +56,6 @@ const Login = () => {
     <div className="login-page">
       <div className="login-card">
         <Link to="/" className="back-link">← На главную</Link>
-
         <div className="login-logo">💦</div>
         <h1 className="login-title">
           {isRegister ? 'Регистрация' : 'Вход в личный кабинет'}
@@ -63,19 +67,20 @@ const Login = () => {
         </p>
 
         <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label>Логин *</label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="ivan_petrov"
+              required
+            />
+          </div>
+
           {isRegister && (
             <>
-              <div className="form-group">
-                <label>Имя *</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Иван"
-                  required
-                />
-              </div>
               <div className="form-group">
                 <label>Телефон</label>
                 <input
@@ -86,20 +91,19 @@ const Login = () => {
                   placeholder="+7 (___) ___-__-__"
                 />
               </div>
+              <div className="form-group">
+                <label>Email *</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
             </>
           )}
-
-          <div className="form-group">
-            <label>Email *</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              required
-            />
-          </div>
 
           <div className="form-group">
             <label>Пароль *</label>
@@ -110,7 +114,7 @@ const Login = () => {
               onChange={handleChange}
               placeholder="••••••••"
               required
-              minLength={4}
+              minLength={6}
             />
           </div>
 

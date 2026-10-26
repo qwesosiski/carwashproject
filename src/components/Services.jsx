@@ -1,8 +1,14 @@
-import React from 'react';
-import { services } from '../data/services';
+import React, { useEffect, useState } from 'react';
+import { api } from '../api/client';
 import './Services.css';
 
 const Services = () => {
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    api.getServices().then(setServices).catch(console.error);
+  }, []);
+
   return (
     <section id="services" className="services">
       <div className="container">
@@ -19,6 +25,9 @@ const Services = () => {
               <div className="service-price">от {service.price} ₽</div>
             </div>
           ))}
+          {services.length === 0 && (
+            <p style={{ color: '#94a3b8' }}>Загрузка услуг…</p>
+          )}
         </div>
       </div>
     </section>

@@ -1,111 +1,74 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { api } from '../api/client';
 
 const AuthContext = createContext();
+export const useAuth = () => useContext(AuthContext);
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-  return context;
-};
+const ACCESS_KEY  = 'aquashine_access';
+const REFRESH_KEY = 'aquashine_refresh';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Загружаем пользователя из localStorage при старте
+  // Восстановление сессии при старте
   useEffect(() => {
-    const savedUser = localStorage.getItem('aquashine_user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (e) {
-        localStorage.removeItem('aquashine_user');
-      }
+    const token = localStorage.getItem(ACCESS_KEY);
+    if (!token) {
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+
+    api.me(token)
+      .then((u) => setUser(u))
+      .catch(() => {
+        localStorage.removeItem(ACCESS_KEY);
+        localStorage.removeItem(REFRESH_KEY);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  // Простая имитация регистрации (в реальном проекте — вызов API)
-  const register = async ({ name, phone, email, password }) => {
-    // Имитация задержки сети
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  const register = useCallback(async (payload) => {
+    // payload: { username, email, phone, password }
+    await api.register(payload);
+    const { access, refresh } = await api.login(payload.username, payload.password);
+    localStorage.setItem(ACCESS_KEY, access);
+    localStorage.setItem(REFRESH_KEY, refresh);
+    const me = await api.me(access);
+    setUser(me);
+    return me;
+  }, []);
 
-    // Проверка: уже существует?
-    const users = JSON.parse(localStorage.getItem('aquashine_users') || '[]');
-    if (users.find((u) => u.email === email)) {
-      throw new Error('Пользователь с таким email уже существует');
-    }
+  const login = useCallback(async (username, password) => {
+    const { access, refresh } = await api.login(username, password);
+    localStorage.setItem(ACCESS_KEY, access);
+    localStorage.setItem(REFRESH_KEY, refresh);
+    const me = await api.me(access);
+    setUser(me);
+    return me;
+  }, []);
 
-    const newUser = {
-      id: Date.now(),
-      name,
-      phone,
-      email,
-      password, // ⚠️ В реальном проекте пароль НИКОГДА не хранится в открытом виде!
-      registeredAt: new Date().toISOString(),
-    };
-
-    users.push(newUser);
-    localStorage.setItem('aquashine_users', JSON.stringify(users));
-
-    // Автоматически логиним
-    const userWithoutPassword = { ...newUser };
-    delete userWithoutPassword.password;
-    setUser(userWithoutPassword);
-    localStorage.setItem('aquashine_user', JSON.stringify(userWithoutPassword));
-
-    return userWithoutPassword;
-  };
-
-  // Имитация входа
-  const login = async (email, password) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    const users = JSON.parse(localStorage.getItem('aquashine_users') || '[]');
-    const found = users.find((u) => u.email === email && u.password === password);
-
-    if (!found) {
-      throw new Error('Неверный email или пароль');
-    }
-
-    const userWithoutPassword = { ...found };
-    delete userWithoutPassword.password;
-    setUser(userWithoutPassword);
-    localStorage.setItem('aquashine_user', JSON.stringify(userWithoutPassword));
-
-    return userWithoutPassword;
-  };
-
-  const logout = () => {
+  const logout = useCallback(() => {
+    localStorage.removeItem(ACCESS_KEY);
+    localStorage.removeItem(REFRESH_KEY);
     setUser(null);
-    localStorage.removeItem('aquashine_user');
-  };
+  }, []);
 
-  const updateProfile = (updates) => {
-    const updated = { ...user, ...updates };
+  const updateProfile = useCallback(async (payload) => {
+    const token = localStorage.getItem(ACCESS_KEY);
+    const updated = await api.updateProfile(payload, token);
     setUser(updated);
-    localStorage.setItem('aquashine_user', JSON.stringify(updated));
+    return updated;
+  }, []);
 
-    // Обновляем в списке всех пользователей
-    const users = JSON.parse(localStorage.getItem('aquashine_users') || '[]');
-    const idx = users.findIndex((u) => u.id === user.id);
-    if (idx !== -1) {
-      users[idx] = { ...users[idx], ...updates };
-      localStorage.setItem('aquashine_users', JSON.stringify(users));
-    }
-  };
+  const getToken = () => localStorage.getItem(ACCESS_KEY);
 
-  const value = {
-    user,
-    loading,
-    register,
-    login,
-    logout,
-    updateProfile,
-    isAuthenticated: !!user,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{
+      user, loading, register, login, logout, updateProfile,
+      isAuthenticated: !!user, getToken,
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
