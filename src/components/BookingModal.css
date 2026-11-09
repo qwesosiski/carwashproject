@@ -1,143 +1,109 @@
-.modal-overlay {
+.modal-overlay-v2 {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
   z-index: 1000;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  animation: fadeIn 0.25s ease;
+  animation: fadeIn 0.3s ease;
 }
 
-.modal {
-  background: #1e293b;
-  border-radius: 24px;
-  padding: 40px 36px;
-  max-width: 560px;
+.modal-v2 {
   width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-width: 520px;
+  border-radius: 32px;
+  padding: 48px 40px;
   position: relative;
-  border: 1px solid rgba(14, 165, 233, 0.2);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-  animation: slideUp 0.3s ease;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.modal-close {
+.modal-close-v2 {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: rgba(14, 165, 233, 0.1);
-  border: none;
-  color: #94a3b8;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  font-size: 1rem;
-  transition: all 0.3s;
+  top: 24px;
+  right: 24px;
+  color: rgba(255,255,255,0.4);
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+.modal-close-v2:hover { color: #fff; }
+
+.modal-title-v2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
 }
 
-.modal-close:hover {
-  background: rgba(14, 165, 233, 0.3);
-  color: #fff;
-}
-
-.modal-title {
-  font-size: 1.8rem;
-  margin-bottom: 8px;
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.modal-subtitle {
-  color: #94a3b8;
-  margin-bottom: 28px;
-}
-
-.booking-form {
+.booking-form-v2 {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
-.form-row {
+.form-row-v2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-group label {
-  font-size: 0.85rem;
-  color: #94a3b8;
-  font-weight: 500;
-}
-
-.form-group input,
-.form-group select {
-  padding: 12px 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(14, 165, 233, 0.2);
-  background: #0f172a;
-  color: #e2e8f0;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+.booking-form-v2 input,
+.booking-form-v2 select {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
   font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.booking-form-v2 input:focus,
+.booking-form-v2 select:focus {
+  outline: none;
   border-color: #0ea5e9;
   box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
 }
 
-.submit-btn {
+.booking-form-v2 input::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+.booking-form-v2 select option {
+  background: #1e293b;
+  color: #fff;
+}
+
+.submit-btn-v2 {
   margin-top: 10px;
   width: 100%;
-  padding: 16px;
-  font-size: 1.05rem;
 }
 
-.modal-success {
+.modal-success-v2 {
   text-align: center;
-  padding: 30px 10px;
+  padding: 40px 0;
 }
-
 .success-icon {
   font-size: 4rem;
   margin-bottom: 20px;
   animation: pop 0.5s ease;
 }
-
-.modal-success h2 {
-  color: #38bdf8;
-  margin-bottom: 10px;
+.modal-success-v2 h2 {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  margin-bottom: 12px;
 }
-
-.modal-success p {
-  color: #94a3b8;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+.modal-success-v2 p { color: rgba(255,255,255,0.5); }
 
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-
 @keyframes pop {
   0% { transform: scale(0); }
   70% { transform: scale(1.15); }
@@ -145,15 +111,7 @@
 }
 
 @media (max-width: 500px) {
-  .modal {
-    padding: 30px 22px;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .modal-title {
-    font-size: 1.5rem;
-  }
+  .form-row-v2 { grid-template-columns: 1fr; }
+  .modal-v2 { padding: 32px 24px; }
+  .modal-title-v2 { font-size: 1.6rem; }
 }

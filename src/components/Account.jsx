@@ -5,10 +5,10 @@ import { api } from '../api/client';
 import './Account.css';
 
 const STATUS_LABELS = {
-  pending:   { text: 'В обработке',  cls: 'pending'   },
-  confirmed: { text: 'Подтверждена', cls: 'confirmed' },
-  completed: { text: 'Завершена',    cls: 'completed' },
-  cancelled: { text: 'Отменена',     cls: 'cancelled' },
+  pending:   { text: 'В обработке',  cls: 'status-pending'   },
+  confirmed: { text: 'Подтверждена', cls: 'status-confirmed' },
+  completed: { text: 'Завершена',    cls: 'status-completed' },
+  cancelled: { text: 'Отменена',     cls: 'status-cancelled' },
 };
 
 const Account = () => {
@@ -50,77 +50,83 @@ const Account = () => {
   const handleLogout = () => { logout(); navigate('/'); };
 
   return (
-    <div className="account-page">
+    <div className="account-page-v2">
       <div className="container">
-        <div className="account-header">
-          <Link to="/" className="back-link">← На главную</Link>
-          <button className="btn btn-outline logout-btn" onClick={handleLogout}>
+        <div className="account-header-v2">
+          <Link to="/" className="back-link-v2">← На главную</Link>
+          <button className="btn-outline" onClick={handleLogout}>
             Выйти
           </button>
         </div>
 
-        <div className="account-grid">
-          <div className="account-card profile-card">
-            <div className="profile-avatar">
+        <div className="account-grid-v2">
+          {/* Профиль пользователя */}
+          <div className="account-card-v2 liquid-glass">
+            <div className="profile-avatar-v2">
               {(user?.username || user?.email || '?').charAt(0).toUpperCase()}
             </div>
             <h2>{user?.username}</h2>
-            <p className="profile-email">{user?.email}</p>
+            <p className="profile-email-v2">{user?.email}</p>
 
-            <div className="profile-info">
-              <div className="info-row">
+            <div className="profile-info-v2">
+              <div className="info-row-v2">
                 <span>Телефон:</span>
                 <strong>{user?.phone || 'Не указан'}</strong>
               </div>
             </div>
 
             {editMode ? (
-              <div className="edit-form">
+              <div className="edit-form-v2">
                 <input
+                  className="form-input-v2"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   placeholder="Телефон"
                 />
-                <div className="edit-actions">
-                  <button className="btn btn-primary" onClick={handleSave}>Сохранить</button>
-                  <button className="btn btn-outline" onClick={() => setEditMode(false)}>Отмена</button>
+                <div className="edit-actions-v2">
+                  <button className="btn-primary" onClick={handleSave}>Сохранить</button>
+                  <button className="btn-outline" onClick={() => setEditMode(false)}>Отмена</button>
                 </div>
               </div>
             ) : (
-              <button className="btn btn-primary edit-btn" onClick={() => setEditMode(true)}>
+              <button className="btn-primary edit-btn-v2" onClick={() => setEditMode(true)}>
                 Редактировать профиль
               </button>
             )}
           </div>
 
-          <div className="account-card bookings-card">
-            <h2>Мои записи</h2>
+          {/* Список записей */}
+          <div className="account-card-v2 liquid-glass">
+            <h3 className="bookings-title-v2">Мои записи</h3>
+            
             {loading ? (
-              <div className="empty-state"><p>Загрузка…</p></div>
+              <div className="empty-state-v2"><p>Загрузка...</p></div>
             ) : bookings.length === 0 ? (
-              <div className="empty-state">
-                <div className="empty-icon">📅</div>
+              <div className="empty-state-v2">
+                <div className="empty-icon-v2">📅</div>
                 <p>У вас пока нет записей</p>
-                <Link to="/" className="btn btn-primary">Записаться на мойку</Link>
+                <Link to="/" className="btn-primary">Записаться на мойку</Link>
               </div>
             ) : (
-              <div className="bookings-list">
+              <div className="bookings-list-v2">
                 {bookings.map((b) => {
                   const st = STATUS_LABELS[b.status] || STATUS_LABELS.pending;
                   return (
-                    <div className="booking-item" key={b.id}>
-                      <div className="booking-top">
+                    <div className="booking-item-v2" key={b.id}>
+                      <div className="booking-top-v2">
                         <strong>{b.service_title || `Услуга #${b.service}`}</strong>
-                        <span className={`booking-status ${st.cls}`}>{st.text}</span>
+                        <span className={`booking-status-v2 ${st.cls}`}>{st.text}</span>
                       </div>
-                      <div className="booking-details">
+                      <div className="booking-details-v2">
                         <span>📅 {b.booking_date || 'Дата не указана'}</span>
                         <span>🕐 {b.booking_time || 'Время не указано'}</span>
                       </div>
-                      <div className="booking-car">🚗 {b.car || 'Автомобиль не указан'}</div>
+                      <div className="booking-car-v2">
+                        🚗 {b.car || 'Автомобиль не указан'}
+                      </div>
                       {(b.status === 'pending' || b.status === 'confirmed') && (
                         <button
-                          className="btn btn-outline cancel-btn"
+                          className="btn-outline cancel-btn-v2"
                           onClick={() => handleCancel(b.id)}
                         >
                           Отменить

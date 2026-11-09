@@ -2,63 +2,76 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-main {
-  flex: 1;
-}
+main { flex: 1; }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 10;
 }
 
+/* Заголовки секций */
 .section-title {
-  font-size: 2.5rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 800;
   text-align: center;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
+  letter-spacing: -0.03em;
 }
 
 .section-subtitle {
   text-align: center;
-  color: #94a3b8;
-  margin-bottom: 3rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 4rem;
   font-size: 1.1rem;
+  font-weight: 500;
 }
 
-.btn {
-  display: inline-block;
-  padding: 12px 32px;
-  border-radius: 50px;
-  border: none;
+/* Кнопки */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  border-radius: 999px;
   font-size: 1rem;
   font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-  color: white;
-  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(14, 165, 233, 0.6);
+  background: rgba(14, 165, 233, 0.15);
+  border-color: rgba(14, 165, 233, 0.4);
+  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.2);
+  transform: translateY(-2px);
 }
 
 .btn-outline {
-  background: transparent;
-  color: #0ea5e9;
-  border: 2px solid #0ea5e9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s;
 }
 
 .btn-outline:hover {
-  background: #0ea5e9;
-  color: white;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
 }

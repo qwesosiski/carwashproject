@@ -53,82 +53,79 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-card">
-        <Link to="/" className="back-link">← На главную</Link>
-        <div className="login-logo">💦</div>
-        <h1 className="login-title">
-          {isRegister ? 'Регистрация' : 'Вход в личный кабинет'}
+    <div className="login-page-v2">
+      <div className="login-card-v2 liquid-glass">
+        <Link to="/" className="back-link-v2">← На главную</Link>
+        
+        <div className="login-logo-v2">💦</div>
+        <h1 className="login-title-v2">
+          {isRegister ? 'Создать аккаунт' : 'С возвращением'}
         </h1>
-        <p className="login-subtitle">
-          {isRegister
-            ? 'Создайте аккаунт для управления записями'
+        <p className="login-subtitle-v2">
+          {isRegister 
+            ? 'Присоединяйтесь к AquaShine для управления записями' 
             : 'Войдите, чтобы просмотреть свои записи'}
         </p>
 
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label>Логин *</label>
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="ivan_petrov"
-              required
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="login-form-v2">
+          <input
+            className="form-input-v2"
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            placeholder="Логин *"
+            required
+          />
 
           {isRegister && (
             <>
-              <div className="form-group">
-                <label>Телефон</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="+7 (___) ___-__-__"
-                />
-              </div>
-              <div className="form-group">
-                <label>Email *</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="you@example.com"
-                  required
-                />
-              </div>
+              <input
+                className="form-input-v2"
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Телефон"
+              />
+              <input
+                className="form-input-v2"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email *"
+                required
+              />
             </>
           )}
 
-          <div className="form-group">
-            <label>Пароль *</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-              required
-              minLength={6}
-            />
-          </div>
+          <input
+            className="form-input-v2"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Пароль *"
+            required
+            minLength={6}
+          />
 
-          {error && <div className="login-error">{error}</div>}
+          {error && <div className="error-msg-v2">{error}</div>}
 
-          <button type="submit" className="btn btn-primary login-btn" disabled={loading}>
+          <button type="submit" className="btn-primary login-btn-v2" disabled={loading}>
             {loading ? 'Загрузка...' : isRegister ? 'Зарегистрироваться' : 'Войти'}
           </button>
         </form>
 
-        <div className="login-switch">
+        <div className="login-switch-v2">
           {isRegister ? 'Уже есть аккаунт? ' : 'Нет аккаунта? '}
-          <button onClick={() => setIsRegister(!isRegister)} className="switch-btn">
-            {isRegister ? 'Войти' : 'Зарегистрироваться'}
+          <button 
+            type="button" 
+            onClick={() => { setIsRegister(!isRegister); setError(''); }} 
+            className="switch-btn-v2"
+          >
+            {isRegister ? 'Войти' : 'Создать'}
           </button>
         </div>
       </div>
